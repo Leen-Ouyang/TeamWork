@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 from gui import excelfile,jsonfile
+from error import show_error
 
 try:
     # 读取Excel文件
@@ -39,13 +40,13 @@ try:
         f.write(nested_json_data)
 
 except FileNotFoundError:
-    raise Exception("200：找不到文件")
+    raise show_error(200)
 
 except pd.errors.ParserError:
-    raise Exception("201：文件读取错误")
+    raise show_error(201)
 
 except json.JSONDecodeError:
-    raise Exception("202：转换出错")
+    raise show_error(202)
 
 except IOError:
-    raise Exception("203：文件生成错误")
+    raise show_error(203)

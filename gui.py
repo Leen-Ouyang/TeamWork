@@ -4,6 +4,7 @@ from tkinter import filedialog
 from ttkbootstrap import Style
 from tkinter import ttk
 from tkinter import messagebox
+from error import get_error_message,show_error
 
 # 创建GUI界面
 root = tk.Tk()
@@ -28,34 +29,19 @@ def submit(excelfile, sender_email, sender_password):
     try:
         status_label.config(text="")  # 清空错误消息
         if not excelfile:
-            raise Exception("101 未提交文件！")
+            raise show_error(101)
         if not sender_email:
-            raise Exception("102 未输入用户名！")
+            raise show_error(102)
         if not sender_password:
-            raise Exception("103 未输入密码！")
+            raise show_error(103)
         if not excelfile.endswith('.xlsx'):
-            raise Exception("104 文件格式错误！")
+            raise show_error(104)
         # 在这里编写你的逻辑代码
         print("文件路径: ", excelfile)
         print("邮箱账户: ", sender_email)
         print("邮箱密码: ", sender_password)
     except Exception as e:
         messagebox.showerror("错误", str(e))
-
-# 错误提示
-def show_error_info():
-    # 创建新的窗口
-    new_window = tk.Toplevel()
-    new_window.title("错误提示")
-
-    # 在新窗口中显示返回的值
-    error_label = tk.Label(new_window, text="Error Value: " + str(error_value))
-    error_label.pack(padx=20, pady=20)
-
-    # 运行新窗口的事件循环
-    new_window.mainloop()
-
-
 
 # 创建界面元素
 file_frame = ttk.Frame(root)
@@ -102,8 +88,3 @@ status_label = ttk.Label(root, text="")
 status_label.pack(padx=10, pady=10, fill='x')
 
 root.mainloop()
-
-##################
-
-error_value = 101  # 假设这是从另一个程序返回的值
-show_error_info(error_value)
