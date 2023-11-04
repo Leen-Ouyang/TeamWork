@@ -48,9 +48,9 @@ def submit(excelfile, sender_email, sender_password):
         if not excelfile.endswith('.xlsx'):
             raise show_error(104)
 
-        print("文件路径: ", excelfile)
-        print("邮箱账户: ", sender_email)
-        print("邮箱密码: ", sender_password)
+        #print("文件路径: ", excelfile)
+        #print("邮箱账户: ", sender_email)
+        #print("邮箱密码: ", sender_password)
         trans()
         sendEmail()
         status_label.config(text="已发送完成，请检查邮箱")

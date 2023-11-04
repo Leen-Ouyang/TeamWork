@@ -20,11 +20,11 @@ def sendEmail():
     # 发送邮件
     for count in range(number_of_students):
         # 邮件内容
-        print("开始发送第{count}条")
+        print("开始发送第 ",{count}," 条")
         mail_msg = MIMEText(generate_report(count), "plain", "utf-8")  # 邮件文本  类型  编码
         mail_msg["From"] = "jy3<1283117490@qq.com>"  #  发件人  编码
         mail_msg["To"] = receive_address  # 收件人 编码
         mail_msg["Subject"] = Header("教务处成绩通知", "utf-8") # 主题 编码
         #发送
         mail_obj.sendmail(mail_user, mail_receivers, mail_msg.as_string())
-        print("第{count}条发送完毕")
+        print("第 ",{count}," 条发送完毕")
