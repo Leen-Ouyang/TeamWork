@@ -1,10 +1,13 @@
-from GlobalSetting import excelfile, sender_email, sender_password #导入全局变量
+from GlobalSetting import excelfile, sender_email, sender_password , jsonfile , current_directory #导入全局变量
 import tkinter as tk
 from tkinter import filedialog
 from ttkbootstrap import Style
 from tkinter import ttk
 from tkinter import messagebox
-from error import get_error_message,show_error
+from error import show_error
+from sendEmail import sendEmail
+from trans import trans
+import os
 
 # 创建GUI界面
 root = tk.Tk()
@@ -14,15 +17,23 @@ root.title("成绩单发送程序")
 style = Style(theme='litera')  # 使用litera主题
 
 # 用于获取文件路径
-excelfile = ''
+excelfile = excelfile
+sender_email = sender_email
+sender_password = sender_password
 
 # 获取文件路径
 def get_file_path():
     global excelfile
-    excelfile = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("Excel files", "*.xlsx"), ("all files", "*.*")))
+    excelfile = filedialog.askopenfilename(initialdir=current_directory, title="Select file", filetypes=(("Excel files", "*.xlsx"), ("all files", "*.*")))
+    excelfile = excelfile.replace("/", "\\\\")
     status_label.config(text="文件路径已选择：" + excelfile)
     file_entry.delete(0, tk.END)  # 清空文本框
     file_entry.insert(0, excelfile)  # 填充文件路径
+
+# 检查JSON文件是否存在，如果不存在则创建
+if not os.path.isfile(jsonfile):
+    with open(jsonfile, 'w', encoding='utf-8') as f:
+        f.write("{}")
 
 # 用于提交操作
 def submit(excelfile, sender_email, sender_password):
@@ -36,10 +47,13 @@ def submit(excelfile, sender_email, sender_password):
             raise show_error(103)
         if not excelfile.endswith('.xlsx'):
             raise show_error(104)
-        # 在这里编写你的逻辑代码
+
         print("文件路径: ", excelfile)
         print("邮箱账户: ", sender_email)
         print("邮箱密码: ", sender_password)
+        trans()
+        sendEmail()
+        status_label.config(text="已发送完成，请检查邮箱")
     except Exception as e:
         messagebox.showerror("错误", str(e))
 
